@@ -1,5 +1,7 @@
-#include <stdio.h>
+#include <iostream>
+#include "Manager.h"
 
-int main(int, char**){
+int main()
+{
     printf("Hello, from Notebook!\n");
 }
