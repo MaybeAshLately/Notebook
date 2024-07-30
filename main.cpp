@@ -3,5 +3,6 @@
 
 int main()
 {
-    printf("Hello, from Notebook!\n");
+    Manager manager;
+    manager.display();
 }
