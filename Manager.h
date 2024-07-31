@@ -13,13 +13,17 @@
 
 class Manager
 {
-    std::string directory;
+    const std::string directory;
     std::vector<std::string> filesNames;
     std::string commandBuffer;
 
+    void getFilesInDirectory();
     void displayHelp();
     bool checkIfFileExist(std::string command);
     void openFile(std::string command);
+    void createFile(std::string command);
+    void clearFile(std::string command);
+    std::string extractFileNameFromCommand(std::string command, int number);
     public:
     Manager();
 
