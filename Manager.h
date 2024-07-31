@@ -7,6 +7,8 @@
 #include <filesystem>
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
+#include <algorithm>
 
 
 class Manager
@@ -14,6 +16,10 @@ class Manager
     std::string directory;
     std::vector<std::string> filesNames;
     std::string commandBuffer;
+
+    void displayHelp();
+    bool checkIfFileExist(std::string command);
+    void openFile(std::string command);
     public:
     Manager();
 
