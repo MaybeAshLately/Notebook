@@ -25,7 +25,7 @@ void Manager::display()
 {
     system("cls");
     std::cout<<"Welcome in Notebook!"<<std::endl;
-    std::cout<<"For help write \"help\""<<std::endl;
+    std::cout<<"For help write \":help\""<<std::endl;
     std::cout<<std::endl;
     for(size_t i=0;i<filesNames.size();++i)
     {
@@ -35,27 +35,31 @@ void Manager::display()
   
         
         
-    while(commandBuffer!="end")
+    while(commandBuffer!=":end")
     {
         std::getline(std::cin,commandBuffer);
-        if(commandBuffer=="help") displayHelp();
-        else if((commandBuffer.size()>=4)and(commandBuffer.compare(0,4,"open")==0))
+        if(commandBuffer==":help") displayHelp();
+        else if((commandBuffer.size()>=5)and(commandBuffer.compare(0,5,":open")==0))
         {
-            std::string fileName=extractFileNameFromCommand(commandBuffer,5);
+            std::string fileName=extractFileNameFromCommand(commandBuffer,6);
             if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file. You can create it with \"create\" command."<<std::endl;
             else openFile(fileName);
         }
-        else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,6,"create")==0))
+        else if((commandBuffer.size()>=7)and(commandBuffer.compare(0,7,":create")==0))
         {
-            std::string fileName=extractFileNameFromCommand(commandBuffer,7);
+            std::string fileName=extractFileNameFromCommand(commandBuffer,8);
             if(checkIfFileExist(fileName)==true)  std::cout<<"This file already exist. You can open it with \"open\" command."<<std::endl;
             else createFile(fileName);
         }
-        else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,5,"clear")==0))
+        else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,6,":clear")==0))
         {
-            std::string fileName=extractFileNameFromCommand(commandBuffer,6);
+            std::string fileName=extractFileNameFromCommand(commandBuffer,7);
             if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file."<<std::endl;
             else clearFile(fileName);
+        }
+        else if(commandBuffer!=":end")
+        {
+            std::cout<<"Command unrecognized. You can display list of commands with \":help\"."<<std::endl;
         }
     }
 }
@@ -67,13 +71,13 @@ void Manager::displayHelp()
     constexpr int size=20;
     system("cls");
     std::cout<<std::left;
-    std::cout<<std::setw(size)<<"Create file.txt"<<"Creates file.txt (if it does not exist already)"<<std::endl;
-    std::cout<<std::setw(size)<<"End"<<"Ends program"<<std::endl;
+    std::cout<<std::setw(size)<<":create file.txt"<<"Creates file.txt (if it does not exist already)"<<std::endl;
+    std::cout<<std::setw(size)<<":end"<<"Ends program"<<std::endl;
     std::cout<<std::setw(size)<<":exit"<<"Exits manual/file (in modify mode without saving changes)"<<std::endl;
-    std::cout<<std::setw(size)<<"Help"<<"Displays manual"<<std::endl;
-    std::cout<<std::setw(size)<<"Modify file.txt"<<"Opens file.txt in modify mode (if it have not existed creates it)"<<std::endl;
-    std::cout<<std::setw(size)<<"Open file.txt"<<"Opens file.txt in read only mode (if it exists)"<<std::endl;
-    std::cout<<std::setw(size)<<"Save"<<"Save changes in current file and exits"<<std::endl;
+    std::cout<<std::setw(size)<<":help"<<"Displays manual"<<std::endl;
+    std::cout<<std::setw(size)<<":modify file.txt"<<"Opens file.txt in modify mode (if it have not existed creates it)"<<std::endl;
+    std::cout<<std::setw(size)<<":open file.txt"<<"Opens file.txt in read only mode (if it exists)"<<std::endl;
+    std::cout<<std::setw(size)<<":save"<<"Save changes in current file and exits"<<std::endl;
     std::cout<<std::endl;
 
     while(commandBuffer!=":exit")
@@ -93,12 +97,14 @@ bool Manager::checkIfFileExist(std::string fileName)
 
 void Manager::openFile(std::string fileName)
 {
+    system("cls");
     fileName=directory+fileName;
     std::ifstream file(fileName);
     if(!file) std::cout<<"Error, cannot open file. Type \":exit\" to abort."<<std::endl;
     else
     {
-        std::cout<<"File opened sucessfully! Type \":exit\" to exit."<<std::endl<<std::endl;
+        std::cout<<"File opened sucessfully! Type \":exit\" to exit."<<std::endl;
+        std::cout<<"------------------------------------------------"<<std::endl<<std::endl;
         std::string line;
         while(std::getline(file,line)) std::cout<<line<<std::endl;   
     }
@@ -120,12 +126,13 @@ void Manager::createFile(std::string fileName)
     fileName=directory+fileName;
 
     std::ofstream file(fileName);
-    if(!file) std::cout<<"Error, cannot create file. Type \"exit\" to abort."<<std::endl;
+    if(!file) std::cout<<"Error, cannot create file. Type \":exit\" to abort."<<std::endl;
     else
     {
         system("cls");
         std::cout<<"New file was created succesfully!"<<std::endl;
         std::cout<<"You can write to file. Type \":exit\" to save and exit the file"<<std::endl;
+        std::cout<<"---------------------------------------------------------------"<<std::endl;
         std::cout<<std::endl;
     }
 
