@@ -57,6 +57,12 @@ void Manager::display()
             if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file."<<std::endl;
             else clearFile(fileName);
         }
+        else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,6,":write")==0))
+        {
+            std::string fileName=extractFileNameFromCommand(commandBuffer,7);
+            if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file. You can create it with \"create\" command."<<std::endl;
+            else writeToFile(fileName);
+        }
         else if(commandBuffer!=":end")
         {
             std::cout<<"Command unrecognized. You can display list of commands with \":help\"."<<std::endl;
@@ -72,12 +78,13 @@ void Manager::displayHelp()
     system("cls");
     std::cout<<std::left;
     std::cout<<std::setw(size)<<":create file.txt"<<"Creates file.txt (if it does not exist already)"<<std::endl;
+    std::cout<<std::setw(size)<<":edit file.txt"<<"Opens file.txt in edit mode (if it have not existed creates it). You can modify the content."<<std::endl;
     std::cout<<std::setw(size)<<":end"<<"Ends program"<<std::endl;
     std::cout<<std::setw(size)<<":exit"<<"Exits manual/file (in modify mode without saving changes)"<<std::endl;
     std::cout<<std::setw(size)<<":help"<<"Displays manual"<<std::endl;
-    std::cout<<std::setw(size)<<":modify file.txt"<<"Opens file.txt in modify mode (if it have not existed creates it)"<<std::endl;
     std::cout<<std::setw(size)<<":open file.txt"<<"Opens file.txt in read only mode (if it exists)"<<std::endl;
     std::cout<<std::setw(size)<<":save"<<"Save changes in current file and exits"<<std::endl;
+    std::cout<<std::setw(size)<<":write file.txt"<<"Opens file.txt in write mode (if it have not existed creates it). You can write new content at the end of file."<<std::endl;
     std::cout<<std::endl;
 
     while(commandBuffer!=":exit")
@@ -106,7 +113,8 @@ void Manager::openFile(std::string fileName)
         std::cout<<"File opened sucessfully! Type \":exit\" to exit."<<std::endl;
         std::cout<<"------------------------------------------------"<<std::endl<<std::endl;
         std::string line;
-        while(std::getline(file,line)) std::cout<<line<<std::endl;   
+        while(std::getline(file,line)) std::cout<<line<<std::endl;  
+        std::cout<<std::endl; 
     }
 
 
@@ -165,5 +173,50 @@ void Manager::clearFile(std::string fileName)
     }
     
     file.close();
+    display();
+}
+
+
+
+void Manager::writeToFile(std::string fileName)
+{
+    system("cls");
+
+    fileName=directory+fileName;
+
+    std::fstream file(fileName,std::ios::in);
+    if(!file) std::cout<<"Error, cannot clear file. Type \":exit\" to go back"<<std::endl;
+    else 
+    {
+        std::cout<<"File opened sucessfully!. You can write changes at the end of file."<<std::endl;
+        std::cout<<"Type \":save\" to save changes or \":exit\" to exit without saving."<<std::endl;
+        std::cout<<"------------------------------------------------------------------"<<std::endl<<std::endl;
+        std::string line;
+        while(std::getline(file,line)) std::cout<<line<<std::endl;
+    }
+    file.close();
+
+    std::vector<std::string> newLines;
+    while((commandBuffer!=":exit")and(commandBuffer!=":save"))
+    {
+        std::getline(std::cin,commandBuffer);
+        if((commandBuffer!=":exit")and(commandBuffer!=":save")) newLines.push_back(commandBuffer);
+    }
+
+    if(commandBuffer==":save")
+    {
+      file.open(fileName, std::ios::out|std::ios::app);
+      if(!file)
+      {
+        std::cout<<"Error, cannot save file. Type \":exit\" to go back"<<std::endl;
+        while(commandBuffer!=":exit") std::getline(std::cin,commandBuffer);
+      } 
+      else 
+      {
+        for(size_t i=0;i<newLines.size();++i) file<<newLines.at(i)<<std::endl;
+        file.close();
+      }
+    }
+
     display();
 }
