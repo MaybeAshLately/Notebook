@@ -24,6 +24,7 @@ class Manager
     void createFile(std::string command);
     void clearFile(std::string fileName);
     void writeToFile(std::string fileName);
+    void deleteFile(std::string fileName);
     std::string extractFileNameFromCommand(std::string command, int number);
     public:
     Manager();

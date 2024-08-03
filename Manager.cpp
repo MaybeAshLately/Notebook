@@ -1,5 +1,4 @@
 #include "Manager.h"
-
 Manager::Manager(): directory("../../../Notes/")
 {
     getFilesInDirectory();
@@ -42,13 +41,13 @@ void Manager::display()
         else if((commandBuffer.size()>=5)and(commandBuffer.compare(0,5,":open")==0))
         {
             std::string fileName=extractFileNameFromCommand(commandBuffer,6);
-            if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file. You can create it with \"create\" command."<<std::endl;
+            if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file. You can create it with \":create\" command."<<std::endl;
             else openFile(fileName);
         }
         else if((commandBuffer.size()>=7)and(commandBuffer.compare(0,7,":create")==0))
         {
             std::string fileName=extractFileNameFromCommand(commandBuffer,8);
-            if(checkIfFileExist(fileName)==true)  std::cout<<"This file already exist. You can open it with \"open\" command."<<std::endl;
+            if(checkIfFileExist(fileName)==true)  std::cout<<"This file already exist. You can open it with \":open\" command."<<std::endl;
             else createFile(fileName);
         }
         else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,6,":clear")==0))
@@ -60,8 +59,14 @@ void Manager::display()
         else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,6,":write")==0))
         {
             std::string fileName=extractFileNameFromCommand(commandBuffer,7);
-            if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file. You can create it with \"create\" command."<<std::endl;
+            if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file. You can create it with \":create\" command."<<std::endl;
             else writeToFile(fileName);
+        }
+        else if((commandBuffer.size()>=7)and(commandBuffer.compare(0,7,":delete")==0))
+        {
+            std::string fileName=extractFileNameFromCommand(commandBuffer,8);
+            if(checkIfFileExist(fileName)==false)  std::cout<<"There is no such file."<<std::endl;
+            else deleteFile(fileName);
         }
         else if(commandBuffer!=":end")
         {
@@ -78,6 +83,7 @@ void Manager::displayHelp()
     system("cls");
     std::cout<<std::left;
     std::cout<<std::setw(size)<<":create file.txt"<<"Creates file.txt (if it does not exist already)"<<std::endl;
+    std::cout<<std::setw(size)<<":delete file.txt"<<"Deletes file.txt (if it exists)"<<std::endl;
     std::cout<<std::setw(size)<<":edit file.txt"<<"Opens file.txt in edit mode (if it have not existed creates it). You can modify the content."<<std::endl;
     std::cout<<std::setw(size)<<":end"<<"Ends program"<<std::endl;
     std::cout<<std::setw(size)<<":exit"<<"Exits manual/file (in modify mode without saving changes)"<<std::endl;
@@ -218,5 +224,39 @@ void Manager::writeToFile(std::string fileName)
       }
     }
 
+    display();
+}
+
+
+
+void Manager::deleteFile(std::string fileName)
+{
+    system("cls");
+    std::cout<<"Are you sure you want to delete "<<fileName<<" (:yes/:no)?"<<std::endl;
+    
+    while((commandBuffer!=":no")and(commandBuffer!=":yes"))
+    {
+        std::getline(std::cin,commandBuffer);
+    }
+
+    if(commandBuffer==":yes")
+    {
+      fileName=directory+fileName;
+      const char *fileChar = fileName.c_str(); 
+
+      int result=remove(fileChar);    
+      if(result==0) std::cout<<"File deleted succesfully! Type \":exit\" to go back."<<std::endl;
+      else std::cout<<"Error. Cannot delete file."<<std::endl;
+    }
+    else std::cout<<"Canceled. Type \":exit\" to go back."<<std::endl;
+
+
+    
+    while(commandBuffer!=":exit")
+    {
+        std::getline(std::cin,commandBuffer);
+    }
+    
+    getFilesInDirectory();
     display();
 }
