@@ -25,7 +25,9 @@ class Manager
     void clearFile(std::string fileName);
     void writeToFile(std::string fileName);
     void deleteFile(std::string fileName);
+    void editFile(std::string fileName);
     std::string extractFileNameFromCommand(std::string command, int number);
+    bool isNumber(std::string txt);
     public:
     Manager();
 
