@@ -1,24 +1,36 @@
 #ifndef NOTE_H
 #define NOTE
 #include <string>
+#include <iostream>
+#include <vector>
+#include <fstream>
 
 class Note
 {
-    const std::string file;
+    const std::string directory;
+    std::string fileName;
 
-    bool createAndOpenFile(){return false;}
+    bool isNumber(std::string txt);
+
     public:
     Note()=delete;
-    Note(std::string fileName): file(fileName)
-    {
+    Note(std::string directory): directory(directory){fileName="";}
 
-    } 
+    Note(std::string directory, std::string newFileName ): directory(directory){fileName=newFileName;}
 
-    bool openFile(){return false;}
-    bool closeFile(){return false;}
-    bool eraseFile(){return false;}
-    bool deleteFile(){return false;}
-    void saveToFile(){}
+
+
+    void openFile();
+    void createFile(std::string newfileName);
+
+    void clearFile();
+
+    void writeToFile();
+    void deleteFile();
+    void editFile();
+
+    std::string getName(){return fileName;}
+
 
 };
 
