@@ -8,20 +8,19 @@ Manager::Manager(): directory("../../../Notes/")
 
 void Manager::getFilesInDirectory()
 {
-    filesNames.clear();
+    files.clear();
     for(const auto & i: std::filesystem::directory_iterator(directory))
     {
         std::string fileBuffer= i.path().filename().string();
-        filesNames.push_back(fileBuffer);
         files.push_back(Note(directory,fileBuffer));
     }
 }
 
 void Manager::displayFiles()
 {
-    for(size_t i=0;i<filesNames.size();++i)
+    for(size_t i=0;i<files.size();++i)
     {
-        std::cout<<filesNames.at(i)<<" ";
+        std::cout<<files.at(i).getName()<<" ";
     }
 }
 
@@ -38,14 +37,13 @@ void Manager::intro()
 
 void Manager::display()
 {
-
     intro();
         
     while(commandBuffer!=":end")
     {
         std::getline(std::cin,commandBuffer);
-
-        if((commandBuffer.size()>=1)and(commandBuffer.at(0)!=':'))
+        if(commandBuffer.size()<1) continue;
+        if(commandBuffer.at(0)!=':')
         {
             std::cout<<"Command unrecognized. You can display list of commands with \":help\"."<<std::endl;
             continue;
@@ -62,6 +60,30 @@ void Manager::display()
     }
 }
 
+std::string Manager::extractCommandNameFromCommand(std::string command)
+{
+    std::string answer="";
+    int count=1;
+    while(std::isalpha(command.at(count)))
+    {
+        answer.push_back(command.at(count));
+       
+        if(command.size()-1>count) ++count;
+        else break;
+    } 
+    return (":"+answer);
+}
+
+std::string Manager::extractFileNameFromCommand(std::string wholeCommand, std::string command)
+{
+    std::string answer="";
+    if((wholeCommand.size()-command.size())<1) return answer;
+    for(size_t i=command.size()+1;i<wholeCommand.size();++i)
+    {
+        answer+=wholeCommand.at(i);
+    }
+    return answer;
+}
 
 
 
@@ -103,40 +125,13 @@ void Manager::handleCommand(std::string command, std::string fileName)
         }
 }
 
-
-
-std::string Manager::extractCommandNameFromCommand(std::string command)
+bool Manager::checkIfFileExist(std::string fileName)
 {
-    std::string answer="";
-    int count=1;
-    while(std::isalpha(command.at(count)))
-    {
-        answer.push_back(command.at(count));
-       
-        if(command.size()-1>count) ++count;
-        else break;
-        
-    } 
-    return (":"+answer);
+    auto matchesFile=[fileName](Note note){return (note.getName()==fileName);};
+
+    if(std::find_if(files.begin(),files.end(),matchesFile)==files.end()) return false;
+    return true;
 }
-
-
-
-
-std::string Manager::extractFileNameFromCommand(std::string wholeCommand, std::string command)
-{
-    std::string answer="";
-    if((wholeCommand.size()-command.size())<1) return answer;
-    for(size_t i=command.size()+1;i<wholeCommand.size();++i)
-    {
-        answer+=wholeCommand.at(i);
-    }
-    
-    return answer;
-}
-
-
-
 
 void Manager::displayHelp()
 {
@@ -158,16 +153,7 @@ void Manager::displayHelp()
     {
         std::getline(std::cin,commandBuffer);
     }
-    display();
-
-}
-
-bool Manager::checkIfFileExist(std::string fileName)
-{
-    auto matchesFile=[fileName](Note note){return (note.getName()==fileName);};
-
-    if(std::find_if(files.begin(),files.end(),matchesFile)==files.end()) return false;
-    return true;
+    intro();
 }
 
 std::vector<Note>::iterator Manager::findFile(std::string fileName)
@@ -179,12 +165,11 @@ std::vector<Note>::iterator Manager::findFile(std::string fileName)
 }
 
 
-
 void Manager::openFile(std::string fileName)
 {
     auto it=findFile(fileName);
     if(it!=files.end()) (*it).openFile();
-    
+         
     intro();
 }
 
@@ -236,5 +221,4 @@ void Manager::editFile(std::string fileName)
     if(it!=files.end()) (*it).editFile();
 
     intro();
-
 }
