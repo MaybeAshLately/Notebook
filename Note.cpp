@@ -1,9 +1,28 @@
 #include "Note.h"
 
+void Note::encryptNote()
+{
+    std::string key="";
+    std::cout<<"Please insert key:"<<std::endl;
+    std::getline(std::cin,key);
+    encryptor.encrypt(fullDirectory,key);
+}
+
+void Note::decryptNote()
+{
+    std::string key="";
+    std::cout<<"Please insert key:"<<std::endl;
+    std::getline(std::cin,key);
+    encryptor.decrypt(fullDirectory,key);
+
+}
+
 void Note::openFile()
 {
     system("cls");
-    
+    decryptNote();
+    system("cls");
+
     std::ifstream file(fullDirectory);
     if(!file) std::cout<<"Error, cannot open file. Type \":exit\" to abort."<<std::endl;
     else
@@ -20,6 +39,7 @@ void Note::openFile()
         std::getline(std::cin,commandBuffer);
     }
     file.close();
+    encryptNote();
     commandBuffer="";
 }
 
@@ -36,9 +56,9 @@ void Note::createFile(std::string newFileName)
 {
    if(checkIfNameCorrect(newFileName)==false)
    {
-            std::cout<<"File name can contain only letters and numbers. Type \":ack\" to acknowledge."<<std::endl;
-            while(commandBuffer!=":ack") std::getline(std::cin,commandBuffer);
-            return;
+        std::cout<<"File name can contain only letters and numbers. Type \":ack\" to acknowledge."<<std::endl;
+        while(commandBuffer!=":ack") std::getline(std::cin,commandBuffer);
+        return;
    }
 
     fileName=newFileName;
@@ -59,7 +79,10 @@ void Note::createFile(std::string newFileName)
         std::getline(std::cin,commandBuffer);
         if(commandBuffer!=":save")file<<commandBuffer<<std::endl;
     }
-    file.close();   
+    file.close();
+
+    encryptNote();
+
     commandBuffer="";
 }
 
@@ -84,6 +107,8 @@ void Note::clearFile()
 
 void Note::writeToFile()
 {
+    system("cls");
+    decryptNote();
     system("cls");
 
     std::fstream file(fullDirectory,std::ios::in);
@@ -120,6 +145,7 @@ void Note::writeToFile()
         file.close();
       }
     }
+    encryptNote();
     commandBuffer="";
 }
 
@@ -220,6 +246,9 @@ void Note::handleInsertCommand(std::fstream& file, std::vector<std::string>& fil
 void Note::editFile()
 {
     system("cls");
+    decryptNote();
+    system("cls");
+
     std::vector<std::string> fileLinesBuffer;
     std::fstream file(fullDirectory,std::ios::in);
     if(!file) std::cout<<"Error, cannot open file. Type \":exit\" to go back"<<std::endl;
@@ -256,6 +285,7 @@ void Note::editFile()
     while(commandBuffer!=":exit") std::getline(std::cin,commandBuffer);
 
     file.close();
+    encryptNote();
     commandBuffer="";
 }
 

@@ -26,7 +26,7 @@ class Encryptor
     public:
     Encryptor(){createAlphabetMatrix();}
 
-    bool encrypt(std::string fileName,std::string key);
+    void encrypt(std::string fileName,std::string key);
     void  decrypt(std::string fileName, std::string key);
 };
 

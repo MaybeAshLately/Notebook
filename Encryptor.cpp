@@ -41,11 +41,11 @@ void Encryptor::readFromFile(std::fstream& file)
 }
 
 
-bool Encryptor::encrypt(std::string fileName,std::string key)
+void Encryptor::encrypt(std::string fileName,std::string key)
 {
 
     std::fstream file(fileName,std::ios::in);
-    if(!file) return false;
+    if(!file) return;
     readFromFile(file);
     file.close();
         
@@ -66,11 +66,10 @@ bool Encryptor::encrypt(std::string fileName,std::string key)
     }
 
     file.open(fileName,std::ios::out);
-    if(!file) return false;
+    if(!file) return;
     
     for(size_t i=0;i<encryptedText.size();++i) file<<encryptedText.at(i)<<std::endl;
     file.close();
-    return true;    
 }
 
 int Encryptor::getLetterNum(char letter)

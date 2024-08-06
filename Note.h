@@ -8,6 +8,7 @@
 
 class Note
 {
+    Encryptor encryptor;
     const std::string directory;
     std::string fileName;
     std::string fullDirectory;
@@ -19,7 +20,8 @@ class Note
     void handleEditCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
     void handleInsertCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
 
-
+    void encryptNote();
+    void decryptNote();
 
     public:
     Note()=delete;
