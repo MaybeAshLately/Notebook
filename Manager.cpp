@@ -140,19 +140,19 @@ void Manager::displayHelp()
     std::cout<<std::left;
     std::cout<<std::setw(size)<<"This program uses following commands (attention, certain commands are available only in certain modules of program)"<<std::endl;
     std::cout<<std::setw(size)<<":ack"<<"Acknowledgement"<<std::endl;
-    std::cout<<std::setw(size)<<":create file.txt"<<"Creates file.txt (if it does not exist already)"<<std::endl;
+    std::cout<<std::setw(size)<<":create file.txt"<<"Creates file.txt (if it does not already exist)"<<std::endl;
     std::cout<<std::setw(size)<<":delete file.txt"<<"Deletes file.txt (if it exists)"<<std::endl;
-    std::cout<<std::setw(size)<<":edit file.txt"<<"Opens file.txt in edit mode (if it have not existed creates it). You can modify the content."<<std::endl;
-    std::cout<<std::setw(size)<<":edit line_nr"<<"Allows edit said line"<<std::endl;
+    std::cout<<std::setw(size)<<":edit file.txt"<<"Opens file.txt in edit mode. You can modify the content with \":edit\", \":erase\" and \":insert\" commands"<<std::endl;
+    std::cout<<std::setw(size)<<":edit line_nr"<<"Allows editing of the specified line"<<std::endl;
     std::cout<<std::setw(size)<<":end"<<"Ends program"<<std::endl;
-    std::cout<<std::setw(size)<<":erase line_nr"<<"Erase said line"<<std::endl;
+    std::cout<<std::setw(size)<<":erase line_nr"<<"Erase the specified line"<<std::endl;
     std::cout<<std::setw(size)<<":exit"<<"Exits manual/file (in modify mode without saving changes)"<<std::endl;
     std::cout<<std::setw(size)<<":help"<<"Displays manual"<<std::endl;
-    std::cout<<std::setw(size)<<":insert line_nr"<<"Allows insertion line/lines after said line"<<std::endl;
+    std::cout<<std::setw(size)<<":insert line_nr"<<"Allows insertion of line(s) after the specified line"<<std::endl;
     std::cout<<std::setw(size)<<":ok"<<"Acknowledgement"<<std::endl;
     std::cout<<std::setw(size)<<":open file.txt"<<"Opens file.txt in read only mode (if it exists)"<<std::endl;
-    std::cout<<std::setw(size)<<":save"<<"Save changes in current file"<<std::endl;
-    std::cout<<std::setw(size)<<":write file.txt"<<"Opens file.txt in write mode (if it have not existed creates it). You can write new content at the end of file."<<std::endl;
+    std::cout<<std::setw(size)<<":save"<<"Saves changes in the current file"<<std::endl;
+    std::cout<<std::setw(size)<<":write file.txt"<<"Opens file.txt in write mode. You can write new content at the end of file."<<std::endl;
     std::cout<<std::endl;
     std::cout<<std::setw(size)<<"Please make sure that you remember the key used to encrypt your file. If you use the wrong key, the content of file will be unrecoverable. You can use the same or different key in different files. After decrypting a file, you can encrypt it with different key."<<std::endl;
 
