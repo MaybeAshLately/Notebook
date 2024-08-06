@@ -1,6 +1,6 @@
 #include "Encryptor.h"
 
-std::string Encryptor::createFullLengthKey(std::string text,std::string key)
+std::string Encryptor::createFullLengthKey(const std::string& text,const std::string& key)
 {
     std::string answer="";
     int j=0;
@@ -17,7 +17,7 @@ std::string Encryptor::createFullLengthKey(std::string text,std::string key)
     return answer;
 }
 
-std::string Encryptor::encryptLine(std::string plaintext,std::string key)
+std::string Encryptor::encryptLine(const std::string& plaintext,const std::string& key)
 {
     std::string answer;
     for(size_t i=0;i<plaintext.size();++i)
@@ -41,7 +41,7 @@ void Encryptor::readFromFile(std::fstream& file)
 }
 
 
-void Encryptor::encrypt(std::string fileName,std::string key)
+void Encryptor::encrypt(const std::string& fileName,const std::string& key)
 {
 
     std::fstream file(fileName,std::ios::in);
@@ -72,19 +72,19 @@ void Encryptor::encrypt(std::string fileName,std::string key)
     file.close();
 }
 
-int Encryptor::getLetterNum(char letter)
+int Encryptor::getLetterNum(const char& letter) const
 {
     if((letter>=startChar)and(letter<=endChar)) return letter-startChar;
     return -1;
 }
 
-char Encryptor::getChar(int num)
+char Encryptor::getChar(const int& num) const
 {   
     if((num>=0)and(num<=90)) return startChar+num;
-    return '0';  
+    return ' ';  
 }
 
-std::string Encryptor::createReversedKey(std::string key)
+std::string Encryptor::createReversedKey(const std::string& key) const
 {
     std::string answer="";
     
@@ -100,10 +100,9 @@ std::string Encryptor::createReversedKey(std::string key)
 }
 
 
-void Encryptor::decrypt(std::string fileName, std::string key)
+void Encryptor::decrypt(const std::string& fileName, const std::string& key)
 {
- 
-   std::fstream file(fileName,std::ios::in);
+    std::fstream file(fileName,std::ios::in);
     if(!file) return;
     
     readFromFile(file);

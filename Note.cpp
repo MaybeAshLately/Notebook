@@ -11,10 +11,9 @@ void Note::encryptNote()
 void Note::decryptNote()
 {
     std::string key="";
-    std::cout<<"Please insert key:"<<std::endl;
+    std::cout<<"Please insert key (attention: wrong key will make your file unrecoverable):"<<std::endl;
     std::getline(std::cin,key);
     encryptor.decrypt(fullDirectory,key);
-
 }
 
 void Note::openFile()
@@ -43,7 +42,7 @@ void Note::openFile()
     commandBuffer="";
 }
 
-bool Note::checkIfNameCorrect(std::string newFileName)
+bool Note::checkIfNameCorrect(const std::string& newFileName) const
 {
     for(size_t i=0;i<newFileName.size();++i)
     {
@@ -52,7 +51,7 @@ bool Note::checkIfNameCorrect(std::string newFileName)
     return true;
 }
 
-void Note::createFile(std::string newFileName)
+void Note::createFile(const std::string& newFileName)
 {
    if(checkIfNameCorrect(newFileName)==false)
    {
@@ -326,7 +325,7 @@ void Note::editFile()
 }
 
 
-bool Note::isNumber(std::string txt)
+bool Note::isNumber(const std::string& txt) const
 {
     for(size_t i=0;i<txt.size();++i)
     {

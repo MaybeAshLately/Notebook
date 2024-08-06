@@ -16,24 +16,24 @@ class Manager
     std::string commandBuffer;
 
 
-    void handleCommand(std::string command, std::string file);
+    void handleCommand(const std::string& command,const std::string& file);
     
-    std::string extractFileNameFromCommand(std::string wholeCommand, std::string command);
-    std::string extractCommandNameFromCommand(std::string command);
+    std::string extractFileNameFromCommand(const std::string& wholeCommand,const std::string& command) const;
+    std::string extractCommandNameFromCommand(const std::string& command) const;
 
-    void intro();
+    void intro() const;
     void getFilesInDirectory();
-    void displayFiles();
-    bool checkIfFileExist(std::string command);
+    void displayFiles() const;
+    bool checkIfFileExist(const std::string& command) const;
     void displayHelp();
 
-    std::vector<Note>::iterator findFile(std::string fileName);
-    void openFile(std::string fileName);
-    void createFile(std::string fileName);
-    void clearFile(std::string fileName);
-    void writeToFile(std::string fileName);
-    void deleteFile(std::string fileName);
-    void editFile(std::string fileName);
+    std::vector<Note>::iterator findFile(const std::string& fileName);
+    void openFile(const std::string& fileName);
+    void createFile(const std::string& fileName);
+    void clearFile(const std::string& fileName);
+    void writeToFile(const std::string& fileName);
+    void deleteFile(const std::string& fileName);
+    void editFile(const std::string& fileName);
     
     
     public:

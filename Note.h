@@ -14,8 +14,8 @@ class Note
     std::string fullDirectory;
     std::string commandBuffer;
 
-    bool isNumber(std::string txt);
-    bool checkIfNameCorrect(std::string newFileName);
+    bool isNumber(const std::string& txt) const;
+    bool checkIfNameCorrect(const std::string& newFileName) const;
     void displayEditInfo(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
     void handleEditCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
     void handleInsertCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
@@ -41,13 +41,13 @@ class Note
     }
 
     void openFile();
-    void createFile(std::string newfileName);
+    void createFile(const std::string& newfileName);
     void clearFile();
     void writeToFile();
     void deleteFile();
     void editFile();
 
-    std::string getName(){return fileName;}
+    std::string getName() const {return fileName;}
 };
 
 #endif

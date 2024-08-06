@@ -14,21 +14,20 @@ class Encryptor
     std::vector<std::string> buffer;
 
     void createAlphabetMatrix();
-    std::string createFullLengthKey(std::string text,std::string key);
-    std::string encryptLine(std::string plaintext,std::string key);
-    std::string createReversedKey(std::string key);
-    int getLetterNum(char letter);
-    char getChar(int num);
+
+    std::string createFullLengthKey(const std::string& text,const std::string& key);
+    std::string encryptLine(const std::string& plaintext,const std::string& key);
+    std::string createReversedKey(const std::string& key) const;
+    int getLetterNum(const char& letter) const;
+    char getChar(const int& num) const;
     void readFromFile(std::fstream& file);
-    
     
     
     public:
     Encryptor(){createAlphabetMatrix();}
 
-    void encrypt(std::string fileName,std::string key);
-    void  decrypt(std::string fileName, std::string key);
+    void encrypt(const std::string& fileName, const std::string& key);
+    void  decrypt(const std::string& fileName, const std::string& key);
 };
-
 
 #endif

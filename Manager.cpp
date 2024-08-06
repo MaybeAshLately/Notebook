@@ -16,7 +16,7 @@ void Manager::getFilesInDirectory()
     }
 }
 
-void Manager::displayFiles()
+void Manager::displayFiles() const
 {
     for(size_t i=0;i<files.size();++i)
     {
@@ -24,7 +24,7 @@ void Manager::displayFiles()
     }
 }
 
-void Manager::intro()
+void Manager::intro() const
 {
     system("cls");
     std::cout<<"Welcome in Notebook!"<<std::endl;
@@ -60,7 +60,7 @@ void Manager::display()
     }
 }
 
-std::string Manager::extractCommandNameFromCommand(std::string command)
+std::string Manager::extractCommandNameFromCommand(const std::string& command) const
 {
     std::string answer="";
     int count=1;
@@ -74,7 +74,7 @@ std::string Manager::extractCommandNameFromCommand(std::string command)
     return (":"+answer);
 }
 
-std::string Manager::extractFileNameFromCommand(std::string wholeCommand, std::string command)
+std::string Manager::extractFileNameFromCommand(const std::string& wholeCommand,const std::string& command) const
 {
     std::string answer="";
     if((wholeCommand.size()-command.size())<1) return answer;
@@ -87,7 +87,7 @@ std::string Manager::extractFileNameFromCommand(std::string wholeCommand, std::s
 
 
 
-void Manager::handleCommand(std::string command, std::string fileName)
+void Manager::handleCommand(const std::string& command,const std::string& fileName)
 {
         if(command==":open")
         {
@@ -125,7 +125,7 @@ void Manager::handleCommand(std::string command, std::string fileName)
         }
 }
 
-bool Manager::checkIfFileExist(std::string fileName)
+bool Manager::checkIfFileExist(const std::string& fileName) const
 {
     auto matchesFile=[fileName](Note note){return (note.getName()==fileName);};
 
@@ -138,16 +138,23 @@ void Manager::displayHelp()
     constexpr int size=20;
     system("cls");
     std::cout<<std::left;
+    std::cout<<std::setw(size)<<"This program uses following commands (attention, certain commands are available only in certain modules of program)"<<std::endl;
+    std::cout<<std::setw(size)<<":ack"<<"Acknowledgement"<<std::endl;
     std::cout<<std::setw(size)<<":create file.txt"<<"Creates file.txt (if it does not exist already)"<<std::endl;
     std::cout<<std::setw(size)<<":delete file.txt"<<"Deletes file.txt (if it exists)"<<std::endl;
     std::cout<<std::setw(size)<<":edit file.txt"<<"Opens file.txt in edit mode (if it have not existed creates it). You can modify the content."<<std::endl;
+    std::cout<<std::setw(size)<<":edit line_nr"<<"Allows edit said line"<<std::endl;
     std::cout<<std::setw(size)<<":end"<<"Ends program"<<std::endl;
+    std::cout<<std::setw(size)<<":erase line_nr"<<"Erase said line"<<std::endl;
     std::cout<<std::setw(size)<<":exit"<<"Exits manual/file (in modify mode without saving changes)"<<std::endl;
     std::cout<<std::setw(size)<<":help"<<"Displays manual"<<std::endl;
+    std::cout<<std::setw(size)<<":insert line_nr"<<"Allows insertion line/lines after said line"<<std::endl;
+    std::cout<<std::setw(size)<<":ok"<<"Acknowledgement"<<std::endl;
     std::cout<<std::setw(size)<<":open file.txt"<<"Opens file.txt in read only mode (if it exists)"<<std::endl;
-    std::cout<<std::setw(size)<<":save"<<"Save changes in current file and exits"<<std::endl;
+    std::cout<<std::setw(size)<<":save"<<"Save changes in current file"<<std::endl;
     std::cout<<std::setw(size)<<":write file.txt"<<"Opens file.txt in write mode (if it have not existed creates it). You can write new content at the end of file."<<std::endl;
     std::cout<<std::endl;
+    std::cout<<std::setw(size)<<"Please make sure that you remember the key used to encrypt your file. If you use the wrong key, the content of file will be unrecoverable. You can use the same or different key in different files. After decrypting a file, you can encrypt it with different key."<<std::endl;
 
     while(commandBuffer!=":exit")
     {
@@ -156,7 +163,7 @@ void Manager::displayHelp()
     intro();
 }
 
-std::vector<Note>::iterator Manager::findFile(std::string fileName)
+std::vector<Note>::iterator Manager::findFile(const std::string& fileName)
 {
     auto matchesFile=[fileName](Note note){return (note.getName()==fileName);};
 
@@ -165,7 +172,7 @@ std::vector<Note>::iterator Manager::findFile(std::string fileName)
 }
 
 
-void Manager::openFile(std::string fileName)
+void Manager::openFile(const std::string& fileName)
 {
     auto it=findFile(fileName);
     if(it!=files.end()) (*it).openFile();
@@ -175,7 +182,7 @@ void Manager::openFile(std::string fileName)
 
 
 
-void Manager::createFile(std::string fileName)
+void Manager::createFile(const std::string& fileName)
 {
     Note temp(directory);
     temp.createFile(fileName);
@@ -185,7 +192,7 @@ void Manager::createFile(std::string fileName)
 }
 
 
-void Manager::clearFile(std::string fileName)
+void Manager::clearFile(const std::string& fileName)
 {
     auto it=findFile(fileName);
     if(it!=files.end()) (*it).clearFile();
@@ -195,7 +202,7 @@ void Manager::clearFile(std::string fileName)
 
 
 
-void Manager::writeToFile(std::string fileName)
+void Manager::writeToFile(const std::string& fileName)
 {
     auto it=findFile(fileName);
     if(it!=files.end()) (*it).writeToFile();
@@ -205,7 +212,7 @@ void Manager::writeToFile(std::string fileName)
 
 
 
-void Manager::deleteFile(std::string fileName)
+void Manager::deleteFile(const std::string& fileName)
 {
     auto it=findFile(fileName);
     if(it!=files.end()) (*it).deleteFile();
@@ -215,7 +222,7 @@ void Manager::deleteFile(std::string fileName)
 }
 
 
-void Manager::editFile(std::string fileName)
+void Manager::editFile(const std::string& fileName)
 {
     auto it=findFile(fileName);
     if(it!=files.end()) (*it).editFile();
