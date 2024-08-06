@@ -179,7 +179,8 @@ void Note::displayEditInfo(std::fstream& file, std::vector<std::string>& fileLin
 {
     std::cout<<"File opened sucessfully! You can:"<<std::endl;
     std::cout<<"A. Edit line with \":edit number_of_line\" command,"<<std::endl;
-    std::cout<<"B. Insert line with \":insert number_of_line\" command (after said line)."<<std::endl;
+    std::cout<<"B. Insert line with \":insert number_of_line\" command (inserts new line/lines after said line)."<<std::endl;
+    std::cout<<"C. Erase line with \":erase number_of_line\" command."<<std::endl;
     std::cout<<"Type \":save\" to save changes or \":exit\" to exit without saving."<<std::endl;
     std::cout<<"------------------------------------------------------------------"<<std::endl;
         
@@ -243,6 +244,37 @@ void Note::handleInsertCommand(std::fstream& file, std::vector<std::string>& fil
     } 
 }
 
+
+void Note::handleEraseCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer)
+{
+    commandBuffer.erase(commandBuffer.begin(),commandBuffer.begin()+7);
+    std::string num=commandBuffer;
+    if(isNumber(num)==false) std::cout<<"Error. Please ensure that you use the correct command."<<std::endl;
+    else
+    {
+        int location=std::stoi(num);
+        if((location<0)||(location>fileLinesBuffer.size())) 
+        {
+            std::cout<<"There is no such line. Type \":ack\" to acknowledge."<<std::endl;
+        }
+        else 
+        {
+            fileLinesBuffer.erase(fileLinesBuffer.begin()+location-1);
+            std::cout<<"Line erased. Type \":ack\" to acknowledge."<<std::endl;
+        }
+        
+        while(commandBuffer!=":ack")
+        {
+            std::getline(std::cin,commandBuffer);
+            if(commandBuffer==":ack")
+            {
+                system("cls");
+                displayEditInfo(file,fileLinesBuffer);
+            }
+        }
+    } 
+}
+
 void Note::editFile()
 {
     system("cls");
@@ -266,6 +298,10 @@ void Note::editFile()
            else if((commandBuffer.size()>=7)and(commandBuffer.compare(0,7,":insert")==0))
            {
             handleInsertCommand(file,fileLinesBuffer);
+           }
+           else if((commandBuffer.size()>=6)and(commandBuffer.compare(0,6,":erase")==0))
+           {
+            handleEraseCommand(file, fileLinesBuffer);
            }
         }
 

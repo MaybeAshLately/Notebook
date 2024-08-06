@@ -19,6 +19,7 @@ class Note
     void displayEditInfo(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
     void handleEditCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
     void handleInsertCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
+    void handleEraseCommand(std::fstream& file, std::vector<std::string>& fileLinesBuffer);
 
     void encryptNote();
     void decryptNote();
